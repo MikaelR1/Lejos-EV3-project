@@ -3,12 +3,6 @@
  */
 public class DataExchange {
 
-    //comment
-    // ObstacleDetector
-    private volatile boolean obstacleDetected = false;
-    // avoid obstacle
-    private volatile boolean avoidObstacle = false;
-
 
 	private int command = FOLLOW_LINE; // The current robot command
 	private float deviation = 0; // The deviation of the robot from the line
