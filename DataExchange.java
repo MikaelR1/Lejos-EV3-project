@@ -1,6 +1,7 @@
 
 	public class DataExchange {
 
+    //comment
     // ObstacleDetector
     private volatile boolean obstacleDetected = false;
     // avoid obstacle
