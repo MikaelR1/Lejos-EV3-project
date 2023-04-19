@@ -6,6 +6,7 @@ public class DataExchange {
 	// ObstacleDetector
 	private volatile boolean obstacleDetected = false;
 	// Avoid obstacle
+	// Comment
 	private volatile boolean avoidObstacle = false;
 
 	// Robot follow commands
