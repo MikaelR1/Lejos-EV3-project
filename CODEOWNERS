@@ -1,0 +1,13 @@
+#Defining files, directories and the codeowners
+
+#Assigning colorsensor class to Rony
+ColorSensor.java @ronymolkanen
+
+#Assigning Motors class to Samppa
+Motors.java @samppasaarinen
+
+#Assigning DE class to Samuli
+DataExchange.java @samulironni
+
+#Assigning Main class to Mikael
+Main3.java @MikaelR1
