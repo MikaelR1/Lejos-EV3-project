@@ -3,10 +3,11 @@
  */
 public class DataExchange {
 
-	// ObstacleDetector
-	private volatile boolean obstacleDetected = false;
-	// Avoid obstacle
-	private volatile boolean avoidObstacle = false;
+    //comment
+    // ObstacleDetector
+    private volatile boolean obstacleDetected = false;
+    // avoid obstacle
+    private volatile boolean avoidObstacle = false;
 
 	// Robot follow commands
 	public final static int FOLLOW_LINE = 1;

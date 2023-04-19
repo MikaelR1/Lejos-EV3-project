@@ -5,6 +5,7 @@ import lejos.robotics.SampleProvider;
 
 public class ColorSensor extends Thread {
 
+	//comment
 	private DataExchange DE;
 	private EV3ColorSensor cs;
 	private SampleProvider redSample;
@@ -31,6 +32,7 @@ public class ColorSensor extends Thread {
 		//infinite loop
 		while(true) {
 		
+		//comment
 		redSample.fetchSample(redSampleData, 0);
 		
 		//pattern to calculate deviation
