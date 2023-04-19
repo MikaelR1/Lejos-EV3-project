@@ -5,7 +5,7 @@
     private volatile boolean obstacleDetected = false;
     // avoid obstacle
     private volatile boolean avoidObstacle = false;
-
+    //comment
     // Robot follow commands
     public final static int FOLLOW_LINE = 1;
     public final static int STOP = 2;

@@ -4,7 +4,7 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.SampleProvider;
 
 public class ColorSensor extends Thread {
-
+//comment
 	private DataExchange DE;
 	private EV3ColorSensor cs;
 	private SampleProvider redSample;
