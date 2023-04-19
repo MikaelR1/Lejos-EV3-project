@@ -9,10 +9,6 @@ public class DataExchange {
     // avoid obstacle
     private volatile boolean avoidObstacle = false;
 
-	// Robot follow commands
-	public final static int FOLLOW_LINE = 1;
-	public final static int END = 2;
-	public final static int AVOID = 3;
 
 	private int command = FOLLOW_LINE; // The current robot command
 	private float deviation = 0; // The deviation of the robot from the line
