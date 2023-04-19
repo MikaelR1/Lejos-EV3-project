@@ -31,6 +31,7 @@ public class ColorSensor extends Thread {
 		//infinite loop
 		while(true) {
 		
+		//comment
 		redSample.fetchSample(redSampleData, 0);
 		
 		//pattern to calculate deviation

@@ -1,18 +1,8 @@
 /**
- *Class for exchanging data between different parts of the robot program.
+ * A class for exchanging data between different parts of the robot program.
  */
 public class DataExchange {
 
-	// ObstacleDetector
-	private volatile boolean obstacleDetected = false;
-	// Avoid obstacle
-	// Comment
-	private volatile boolean avoidObstacle = false;
-
-	// Robot follow commands
-	public final static int FOLLOW_LINE = 1;
-	public final static int END = 2;
-	public final static int AVOID = 3;
 
 	private int command = FOLLOW_LINE; // The current robot command
 	private float deviation = 0; // The deviation of the robot from the line

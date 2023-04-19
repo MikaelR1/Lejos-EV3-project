@@ -3,7 +3,7 @@ import lejos.hardware.port.MotorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
 
 public class Motors extends Thread {
-
+// this is new comment 
     private DataExchange DE;
     private EV3ColorSensor cs;
     private EV3LargeRegulatedMotor leftMotor;
@@ -24,7 +24,7 @@ public class Motors extends Thread {
 
     @Override
     public void run() {
-
+        //Comment here 
         while (true) {
 
             switch (DE.getCommand()) {
