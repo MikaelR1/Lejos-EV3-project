@@ -1,5 +1,5 @@
 /**
- *Class for exchanging data between different parts of the robot program.
+ * A class for exchanging data between different parts of the robot program.
  */
 public class DataExchange {
 
