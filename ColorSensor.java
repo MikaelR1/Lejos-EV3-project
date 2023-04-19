@@ -28,6 +28,7 @@ public class ColorSensor extends Thread {
 		float black = 0.10f;
 		float white = 0.30f;
 
+		//infinite loop
 		while(true) {
 		
 		redSample.fetchSample(redSampleData, 0);
