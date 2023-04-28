@@ -44,15 +44,33 @@ function sendRobot(form){
         <label for="Kiihdytys"><b>Kiihdytys:</b></label>
         <input type='number' name='acceleration' min="0" max="100" required><br><br>
 
-        <label for="Valkoinen-arvo"><b>Valkoinen-arvo:</b></label>
-        <input type='range' name='white_value' step="0.01" min="0.3" max="1" placeholder='Valkoinen-arvo...'><br><br>
+      <label for="white_value"><b>Valkoinen-arvo:</b></label>
+    <input type="range" id="white_value" name="white_value" step="0.01" min="0.3" max="1">
+    <output id="white_output"></output><br><br>
 
-        <label for="Musta-arvo"><b>Musta-arvo:</b></label>
-        <input type='range' name='black_value' step="0.01" min="0" max="0.3"placeholder='Musta-arvo...'><br><br>
+    <label for="black_value"><b>Musta-arvo:</b></label>
+    <input type="range" id="black_value" name="black_value" step="0.01" min="0" max="0.3">
+    <output id="black_output"></output><br><br>
  
         <input type="button" name="ok" value="OK" onclick="sendRobot(this.form);">
         
   </form>
+  
+   <script>
+    const whiteValue = document.getElementById('white_value');
+    const whiteOutput = document.getElementById('white_output');
+    whiteOutput.textContent = whiteValue.value;
+    whiteValue.addEventListener('input', () => {
+      whiteOutput.textContent = whiteValue.value;
+    });
+
+    const blackValue = document.getElementById('black_value');
+    const blackOutput = document.getElementById('black_output');
+    blackOutput.textContent = blackValue.value;
+    blackValue.addEventListener('input', () => {
+      blackOutput.textContent = blackValue.value;
+    });
+  </script>
   
 	   <div id="result"></div>
 	 </section>
@@ -66,13 +84,3 @@ function sendRobot(form){
 </aside> 	
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
