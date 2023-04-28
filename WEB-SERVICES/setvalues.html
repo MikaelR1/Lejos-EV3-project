@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="/assets/style.css" rel="stylesheet" type="text/css">
+<title>Insert title here</title>
+</head>
+<script>
+function sendRobot(form){
+	var robot = new Object();
+	robot.speedmulti = form.speedmulti.value;
+	robot.acceleration = form.acceleration.value;
+	robot.black_value = form.black_value.value;
+	robot.white_value = form.white_value.value;
+	var jsonRobot = JSON.stringify(robot);
+	
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("result").innerHTML = this.responseText;
+		}
+	};
+	xmlhttp.open("POST", "/rest/testing/newrobotvalues", true);
+	xmlhttp.setRequestHeader("Content-type", "application/json");
+	xmlhttp.send(jsonRobot);
+}
+</script>
+
+<body>
+ <h1>LEGO EV3 Control Panel</h1>
+<form><!--   <form action="/rest/testing/getlatestvalues" method="get"> -->
+  Speed <input type="number" name="speedmulti" min="0" max="600" required><br>
+  Acceleration <input type="number" name="acceleration" min="0" max="100" required><br>
+  Black value <input type="text" step="0.1" name="black_value" required><br>
+  White value <input type="text" step="0.1" name="white_value" required><br>
+  <input type="button" name="ok" value="OK" onclick="sendRobot(this.form);">
+  </form>
+  <div id="result"></div>
+</body>
+</html>
