@@ -2,9 +2,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
- <link href="assets/style.css" rel="stylesheet" type="text/css">
+<link href="assets/style.css" rel="stylesheet" type="text/css">
 <title>Robotin kontrollipaneeli</title>
 </head>
+
 <script>
 function sendRobot(form){
 	var robot = new Object();
@@ -26,37 +27,79 @@ function sendRobot(form){
 }
 </script>
 
+<script>
+function readCurrentStats(){
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+		  var jsonstats=this.responseText;
+		  //Add JSON string as a content of element resultone
+		  document.getElementById("stats").innerHTML = jsonstats;
+		  //Parse json string to a Javascript object
+		  var stats=JSON.parse(jsonstats);
+		  //print stats by function printOneFish.
+		  printCurrentStats(stats);
+	  }
+	};
+	xmlhttp.open("GET", "/rest/testing/getlatestvalues", true);
+	xmlhttp.send();	
+}
+function printCurrentStats(robot){
+	var s = "<table>";
+	s += "<tr><th>Nopeus</th><th>Kiihdytys</th><th>Musta-arvo</th><th>Valkoinen-arvo</th></tr>";
+	s += "<tr>";
+	s += "<td>" + robot.speedmulti + "</td>";
+	s += "<td>" + robot.acceleration + "</td>";
+	s += "<td>" + robot.black_value + "</td>";
+	s += "<td>" + robot.white_value + "</td>";
+	s += "</tr>";
+	s += "</table>";
+	document.getElementById("stats").innerHTML=s;
+}
+
+</script>
+
 <body>
-<header id="heder">
-     <div id=lego>
-	<img id='logo' src='https://logos-world.net/wp-content/uploads/2020/09/LEGO-Logo.png' width='150' height='70' style='float:left;'>
-	</div>
-	<h1>EV3 Lego Project  -Team Databurst</h1>
-	
-</header>
-<article id='artikkeli' name='artikla'>
-	<section>	
-<h2>Robotin kontrollipaneeli</h2>
- <form>
-          <label for="Nopeus"><b>Nopeus:</b></label>
-        <input id="nopeus" type='number' name='speedmulti' min="0" max="600" required><br><br>        
+	<header id="heder">
+		<div id=lego>
+			<img id='logo'
+				src='https://logos-world.net/wp-content/uploads/2020/09/LEGO-Logo.png'
+				width='150' height='70' style='float: left;'>
+		</div>
+		<h1>EV3 Lego Project -Team Databurst</h1>
 
-        <label for="Kiihdytys"><b>Kiihdytys:</b></label>
-        <input type='number' name='acceleration' min="0" max="100" required><br><br>
+	</header>
+	<article id='artikkeli'>
+		<section>
+			<h2>Robotin kontrollipaneeli</h2>
+			<form>
+				<label for="Nopeus"><b>Nopeus:</b></label> <input id="nopeus"
+					type='number' name='speedmulti' min="0" max="600" required><br>
+				<br> <label for="Kiihdytys"><b>Kiihdytys:</b></label> <input
+					type='number' name='acceleration' min="0" max="100" required><br>
+				<br> <label for="black_value"><b>Musta-arvo:</b></label> <input
+					type="range" id="black_value" name="black_value" step="0.01"
+					min="0" max="0.3">
+				<output id="black_output"></output>
+				<br>
+				<br> <label for="white_value"><b>Valkoinen-arvo:</b></label> <input
+					type="range" id="white_value" name="white_value" step="0.01"
+					min="0.3" max="1">
+				<output id="white_output"></output>
+				<br> <br> <input type="button" name="ok"
+					value="Lähetä uudet arvot robotille"
+					onclick="sendRobot(this.form);">
+			</form>
 
-      <label for="white_value"><b>Valkoinen-arvo:</b></label>
-    <input type="range" id="white_value" name="white_value" step="0.01" min="0.3" max="1">
-    <output id="white_output"></output><br><br>
+			<br>
+			<br>
+			<button onclick='readCurrentStats();'>Näytä tämänhetkiset
+				arvot</button>
+			<br> <br>
+			<br>
+			<div id='stats'></div>
 
-    <label for="black_value"><b>Musta-arvo:</b></label>
-    <input type="range" id="black_value" name="black_value" step="0.01" min="0" max="0.3">
-    <output id="black_output"></output><br><br>
- 
-        <input type="button" name="ok" value="OK" onclick="sendRobot(this.form);">
-        
-  </form>
-  
-   <script>
+			<script>
     const whiteValue = document.getElementById('white_value');
     const whiteOutput = document.getElementById('white_output');
     whiteOutput.textContent = whiteValue.value;
@@ -71,16 +114,18 @@ function sendRobot(form){
       blackOutput.textContent = blackValue.value;
     });
   </script>
-  
-	   <div id="result"></div>
-	 </section>
+
+		</section>
 	</article>
-<aside>
-<h2>Robotin Github</h2>
-<p>(Klikkaamalla robottia näet koodit)<p>
-<a href="https://github.com/MikaelR1/Lejos-EV3-project">
-<img src="https://education.lego.com/v3/assets/blt293eea581807678a/blt4a6d7583d277155d/5ec7c25ad5c7d2262a38d177/unit-plan-robot-trainer.png?auto=webp&format=png&width=1800&quality=90&fit=bounds" alt="Robotin kuva" width="550" height="300">
-</a>
-</aside> 	
+
+	<aside>
+		<h2>Robotin Github</h2>
+		<p>(Klikkaamalla robottia näet koodit)
+		<p>
+			<a href="https://github.com/MikaelR1/Lejos-EV3-project"> <img
+				src="https://education.lego.com/v3/assets/blt293eea581807678a/blt4a6d7583d277155d/5ec7c25ad5c7d2262a38d177/unit-plan-robot-trainer.png?auto=webp&format=png&width=1800&quality=90&fit=bounds"
+				alt="Robotin kuva" width="550" height="300">
+			</a>
+	</aside>
 </body>
 </html>
