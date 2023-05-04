@@ -10,25 +10,26 @@ import javax.persistence.Id;
 public class Speeddata {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //Primary key of the table with automatically generated value
     private int id;
     
-    @Column(name="lcurrent_speed")
+    @Column(name="lcurrent_speed") //Column name to database
     private float lcurrent_speed;
     
-    @Column(name="rcurrent_speed")
+    @Column(name="rcurrent_speed") //Column name to database
     private float rcurrent_speed;
     
+    // Constructor with parameters		
     public Speeddata(float lcurrent_speed, float rcurrent_speed) {
         this.lcurrent_speed = lcurrent_speed;
         this.rcurrent_speed = rcurrent_speed;
     }
     
-    // default constructor
+    // Default constructor
     public Speeddata() {
     }
     
-    // getters and setters
+    // Generate getters and setters for the fields
     public int getId() {
         return id;
     }
