@@ -1,21 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<link href="assets/style.css" rel="stylesheet" type="text/css">
-<title>Robotin kontrollipaneeli</title>
-</head>
-
-<script>
-function sendRobot(form){
-	var robot = new Object();
-	robot.speedmulti = form.speedmulti.value;
-	robot.acceleration = form.acceleration.value;
-	robot.black_value = form.black_value.value;
-	robot.white_value = form.white_value.value;
-	var jsonRobot = JSON.stringify(robot);
-	
-	var xmlhttp = new XMLHttpRequest();
+var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			document.getElementById("result").innerHTML = this.responseText;
