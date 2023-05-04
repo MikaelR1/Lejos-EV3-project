@@ -1,8 +1,9 @@
+
+import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
-import lejos.utility.Delay;
 
 public class ObstacleDetector extends Thread {
 
@@ -18,33 +19,45 @@ public class ObstacleDetector extends Thread {
 		ultraData = new float[ultraDistance.sampleSize()];
 	}
 
+	// Override the run() method of the Thread class
 	@Override
-
 	public void run() {
 
+		// Introduce the variable for detections
+		int numOfDetections = 0;
+
 		while (true) {
+
+			// Fetch the ultrasonic data and store the distance in a variable
 			ultraDistance.fetchSample(ultraData, 0);
 			float distance = ultraData[0] * 100;
-			LCD.drawString("Distance: " + distance, 0,5);
+
+			// Display the current distance on the LCD screen
+			LCD.drawString("Distance: " + distance, 1, 5);
 			LCD.refresh();
 
-			try {
-				Thread.sleep(1000);
+			if (distance <= 25) {// If the obstacle is detected within 25 cm
 
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+				// It increases the count of detections
+				numOfDetections++;
 
-			if (distance <= 30 ) {
+				// Sets the 'obstacleDetected' flag to true in the DataExchange object
 				DE.setObstacleDetected(true);
-				System.out.println("Obstacle detected");
-				DE.setCommand(2);
-				Delay.msDelay(1000);
-			
-			} else {
-				DE.setObstacleDetected(false);
+
+				// Print a message on the LCD and make a warning sound
+				LCD.drawString("Obstacle detected " + numOfDetections + " time(s)", 1, 5);
+				LCD.refresh();
+				Sound.beep();
+
+				// If it is the first detection, set the 'command' to 'AVOID'
+				if (numOfDetections == 1) {
+					DE.setCommand(DataExchange.AVOID);
+
+					// If it is the third or more detection, set the 'command' to 'END'
+				} else if (numOfDetections >= 3) {
+					DE.setCommand(DataExchange.END);
+				}
 			}
 		}
 	}
 }
-
