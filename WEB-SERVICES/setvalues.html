@@ -7,45 +7,66 @@
 </head>
 
 <script>
+// Function to send robot data to server using XMLHttpRequest
 function sendRobot(form){
+	// Create new object to store robot values from form input
 	var robot = new Object();
+	// Set speedmulti value to the robot object from form input
 	robot.speedmulti = form.speedmulti.value;
+	// Set acceleration value to the robot object from form input
 	robot.acceleration = form.acceleration.value;
+	// Set black_value value to the robot object from form input
 	robot.black_value = form.black_value.value;
+	// Set white_value value to the robot object from form input
 	robot.white_value = form.white_value.value;
+	// Convert robot object to JSON string
 	var jsonRobot = JSON.stringify(robot);
 	
+	// Create new XMLHttpRequest object
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
+		// Check if request was successful
 		if (this.readyState == 4 && this.status == 200) {
+			// Display server response in result element
 			document.getElementById("result").innerHTML = this.responseText;
 		}
 	};
+	// Open connection to server with POST method
 	xmlhttp.open("POST", "/rest/testing/newrobotvalues", true);
+	// Set request header with content type
 	xmlhttp.setRequestHeader("Content-type", "application/json");
+	// Send JSON data to server
 	xmlhttp.send(jsonRobot);
 }
 </script>
 
 <script>
+// Function to get current robot stats from server using XMLHttpRequest
 function readCurrentStats(){
+	// Create new XMLHttpRequest object
 	var xmlhttp=new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
-	  if (this.readyState == 4 && this.status == 200) {
-		  var jsonstats=this.responseText;
-		  //Add JSON string as a content of element resultone
-		  document.getElementById("stats").innerHTML = jsonstats;
-		  //Parse json string to a Javascript object
-		  var stats=JSON.parse(jsonstats);
-		  //print stats by function printOneFish.
-		  printCurrentStats(stats);
-	  }
+		// Check if request was successful
+		if (this.readyState == 4 && this.status == 200) {
+			// Get JSON string from server response
+			var jsonstats=this.responseText;
+			// Add JSON string as a content of element stats
+			document.getElementById("stats").innerHTML = jsonstats;
+			// Parse JSON string to a Javascript object
+			var stats=JSON.parse(jsonstats);
+			// Call function to print current robot stats
+			printCurrentStats(stats);
+		}
 	};
+	// Open connection to server with GET method
 	xmlhttp.open("GET", "/rest/testing/getlatestvalues", true);
+	// Send request to server
 	xmlhttp.send();	
 }
+
+// Function to print current robot stats
 function printCurrentStats(robot){
-	var s = <table id="table1">;
+	var s = "<table id='table1'>";
 	s += "<tr><th>Nopeus</th><th>Kiihdytys</th><th>Musta-arvo</th><th>Valkoinen-arvo</th></tr>";
 	s += "<tr>";
 	s += "<td>" + robot.speedmulti + "</td>";
@@ -60,11 +81,15 @@ function printCurrentStats(robot){
 </script>
 
 <script>
+// Function to get current robot speed data from server using XMLHttpRequest
 function readDbSpeed(){
+	// Create new XMLHttpRequest object
 	var xmlhttp=new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
-	  if (this.readyState == 4 && this.status == 200) {
-		  var jsondb=this.responseText;
+		// Check if request was successful
+		if (this.readyState == 4 && this.status == 200) {
+			// Get JSON string from server response
+			var jsondb=this.responseText;
 		  //Add JSON string as a content of element resultone
 		  document.getElementById("dbspeed").innerHTML = jsondb;
 		  //Parse json string to a Javascript object
@@ -102,6 +127,7 @@ function printDbSpeed(speeddata){
 	<article id='artikkeli'>
 		<section>
 			<h2>Robotin kontrollipaneeli</h2>
+			//Define form for user input
 			<form>
 				<label for="Nopeus"><b>Nopeus:</b></label> <input id="nopeus"
 					type='number' name='speedmulti' min="0" max="600" required><br>
@@ -128,7 +154,8 @@ function printDbSpeed(speeddata){
 			<br> <br>
 			<br>
 			<div id='stats'></div>
-
+			
+//Define script to update white and black value output fields on input
 			<script>
     const whiteValue = document.getElementById('white_value');
     const whiteOutput = document.getElementById('white_output');
