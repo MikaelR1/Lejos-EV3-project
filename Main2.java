@@ -1,12 +1,14 @@
+
 import lejos.hardware.Button;
 
-public class Main3 {
+public class Main2 {
 
-	// Comment
 	private static DataExchange DE;
 	private static ColorSensor CS;
 	private static ObstacleDetector OD;
 	private static Motors MO;
+	private static SendData SD;
+	private static ReceiveData RD;
 
 	public static void main(String[] args) {
 
@@ -21,11 +23,19 @@ public class Main3 {
 
 		// Create motor thread
 		MO = new Motors(DE);
+		
+		// Create send data thread
+		SD = new SendData(DE);
+		
+		// Create receive data thread
+		RD = new ReceiveData(DE);
 
 		// Start threads
 		CS.start();
 		OD.start();
 		MO.start();
+		SD.start();
+		RD.start();
 
 		Button.waitForAnyPress();
 		System.exit(0);
