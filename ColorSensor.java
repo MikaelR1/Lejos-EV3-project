@@ -17,28 +17,23 @@ public class ColorSensor extends Thread {
 		redSampleData = new float[redSample.sampleSize()];
 	}
 
+	// Override the run() method of the Thread class
 	@Override
-	
 	public void run() {
-		
-		// INITIALIZE COLORSENSOR
-		cs.setFloodlight(true);
-		
-		// Threshold values
-		float black = 0.10f;
-		float white = 0.30f;
 
-		//infinite loop
-		while(true) {
-		
-		//comment
-		redSample.fetchSample(redSampleData, 0);
-		
-		//pattern to calculate deviation
-		float deviation = (redSampleData[0] - (black + white) / 2);
-		
-		// Pass deviation variable to DataExchange object
-        DE.setDeviation(deviation);
+		// Set colorsensor on
+		cs.setFloodlight(true);
+
+		while (true) {
+
+			// Read the value of the color sensor and store it in array
+			redSample.fetchSample(redSampleData, 0);
+
+			// Pattern to calculate deviation
+			float deviation = (redSampleData[0] - (DE.getBlack_value() + DE.getWhite_value()) / 2);
+
+			// Pass deviation variable to DataExchange object
+			DE.setDeviation(deviation);
 		}
 	}
-}	
+}
