@@ -10,9 +10,12 @@ public class SendData extends Thread {
 		this.DE = dataExchange;
 	}
 
+	// Override the run() method of the Thread class
 	@Override
 	public void run() {
+
 		while (true) {
+
 			try {
 				// Construct the URL with the current speed values
 				String urlStr = baseURL + DE.getLcurrent_speed() + "/" + DE.getRcurrent_speed();
@@ -31,12 +34,15 @@ public class SendData extends Thread {
 				connection.disconnect();
 
 			} catch (Exception e) {
+				// If there is an exception, print an error message
 				System.out.println("Failed to save data: " + e.getMessage());
 			}
 
+			// Wait for 6 seconds before sending new data again
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(6000);
 			} catch (InterruptedException e) {
+				// If there is an exception while waiting, print an error message
 				e.printStackTrace();
 			}
 		}
