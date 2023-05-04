@@ -45,7 +45,7 @@ function readCurrentStats(){
 	xmlhttp.send();	
 }
 function printCurrentStats(robot){
-	var s = "<table>";
+	var s = <table id="table1">;
 	s += "<tr><th>Nopeus</th><th>Kiihdytys</th><th>Musta-arvo</th><th>Valkoinen-arvo</th></tr>";
 	s += "<tr>";
 	s += "<td>" + robot.speedmulti + "</td>";
@@ -55,6 +55,36 @@ function printCurrentStats(robot){
 	s += "</tr>";
 	s += "</table>";
 	document.getElementById("stats").innerHTML=s;
+}
+
+</script>
+
+<script>
+function readDbSpeed(){
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+		  var jsondb=this.responseText;
+		  //Add JSON string as a content of element resultone
+		  document.getElementById("dbspeed").innerHTML = jsondb;
+		  //Parse json string to a Javascript object
+		  var dbspeed=JSON.parse(jsondb);
+		  //print stats 
+		  printCurrentStats(dbspeed);
+	  }
+	};
+	xmlhttp.open("GET", "/rest/testing/getdbspeed", true);
+	xmlhttp.send();	
+}
+function printDbSpeed(speeddata){
+	var t = <table id="table2">;
+	t += "<tr><th>Vasemman moottorin nopeus</th><th>Oikean moottorin nopeus</th></tr>";
+	t += "<tr>";
+	t += "<td>" + speeddata.lcurrent_speed + "</td>";
+	t += "<td>" + speeddata.rcurrent_speed + "</td>";
+	t += "</tr>";
+	t += "</table>";
+	document.getElementById("dbspeed").innerHTML=t;
 }
 
 </script>
@@ -76,7 +106,7 @@ function printCurrentStats(robot){
 				<label for="Nopeus"><b>Nopeus:</b></label> <input id="nopeus"
 					type='number' name='speedmulti' min="0" max="600" required><br>
 				<br> <label for="Kiihdytys"><b>Kiihdytys:</b></label> <input
-					type='number' name='acceleration' min="0" max="100" required><br>
+					type='number' name='acceleration' min="0" max="1000" required><br>
 				<br> <label for="black_value"><b>Musta-arvo:</b></label> <input
 					type="range" id="black_value" name="black_value" step="0.01"
 					min="0" max="0.3">
@@ -119,7 +149,10 @@ function printCurrentStats(robot){
 	</article>
 
 	<aside>
-	
+			<br>
+			<button onclick='readDbSpeed();'>Näytä moottorien tämänhetkiset nopeudet</button>
+			<br> <br>
+			<div id='dbspeed'></div>
 	</aside>
 </body>
 </html>
