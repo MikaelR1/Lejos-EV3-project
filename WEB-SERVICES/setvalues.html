@@ -1,125 +1,120 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<link href="assets/style.css" rel="stylesheet" type="text/css">
-<title>Robotin kontrollipaneeli</title>
-</head>
+package services;
 
-<script>
-function sendRobot(form){
-	var robot = new Object();
-	robot.speedmulti = form.speedmulti.value;
-	robot.acceleration = form.acceleration.value;
-	robot.black_value = form.black_value.value;
-	robot.white_value = form.white_value.value;
-	var jsonRobot = JSON.stringify(robot);
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import data.Robot;
+import data.Speeddata;
+
+@Path("/testing")
+public class Testing {
+
+	EntityManagerFactory emf = Persistence.createEntityManagerFactory("robot");
+
+	@POST
+	@Path("/newrobotvalues")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Robot newRobotValues(Robot robot) {
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		em.persist(robot);
+		em.getTransaction().commit();
+		return robot;
+	}
 	
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			document.getElementById("result").innerHTML = this.responseText;
-		}
-	};
-	xmlhttp.open("POST", "/rest/testing/newrobotvalues", true);
-	xmlhttp.setRequestHeader("Content-type", "application/json");
-	xmlhttp.send(jsonRobot);
-}
-</script>
+	@GET
+	@Path("/getlatestvalues")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Robot getLatestStats() {
+		EntityManager em = emf.createEntityManager();
+		int maxId = (int) em.createQuery("SELECT MAX(R.id) FROM Robot R").getSingleResult();
+		int lastId = maxId;
 
-<script>
-function readCurrentStats(){
-	var xmlhttp=new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function() {
-	  if (this.readyState == 4 && this.status == 200) {
-		  var jsonstats=this.responseText;
-		  //Add JSON string as a content of element resultone
-		  document.getElementById("stats").innerHTML = jsonstats;
-		  //Parse json string to a Javascript object
-		  var stats=JSON.parse(jsonstats);
-		  //print stats by function printOneFish.
-		  printCurrentStats(stats);
-	  }
-	};
-	xmlhttp.open("GET", "/rest/testing/getlatestvalues", true);
-	xmlhttp.send();	
-}
-function printCurrentStats(robot){
-	var s = "<table>";
-	s += "<tr><th>Nopeus</th><th>Kiihdytys</th><th>Musta-arvo</th><th>Valkoinen-arvo</th></tr>";
-	s += "<tr>";
-	s += "<td>" + robot.speedmulti + "</td>";
-	s += "<td>" + robot.acceleration + "</td>";
-	s += "<td>" + robot.black_value + "</td>";
-	s += "<td>" + robot.white_value + "</td>";
-	s += "</tr>";
-	s += "</table>";
-	document.getElementById("stats").innerHTML=s;
-}
+		List<Robot> list = em.createQuery("SELECT R FROM Robot R WHERE R.id >= :lastId").setParameter("lastId", lastId)
+				.getResultList();
 
-</script>
-
-<body>
-	<header id="heder">
-		<div id=lego>
-			<img id='logo'
-				src='/assets/LEGO-Logo.png' alt= 'lego'
-				width='150' height='70' style='float: left;'>
-		</div>
-		<h1>EV3 Lego Project -Team Databurst</h1>
-
-	</header>
-	<article id='artikkeli'>
-		<section>
-			<h2>Robotin kontrollipaneeli</h2>
-			<form>
-				<label for="Nopeus"><b>Nopeus:</b></label> <input id="nopeus"
-					type='number' name='speedmulti' min="0" max="600" required><br>
-				<br> <label for="Kiihdytys"><b>Kiihdytys:</b></label> <input
-					type='number' name='acceleration' min="0" max="100" required><br>
-				<br> <label for="black_value"><b>Musta-arvo:</b></label> <input
-					type="range" id="black_value" name="black_value" step="0.01"
-					min="0" max="0.3">
-				<output id="black_output"></output>
-				<br>
-				<br> <label for="white_value"><b>Valkoinen-arvo:</b></label> <input
-					type="range" id="white_value" name="white_value" step="0.01"
-					min="0.3" max="1">
-				<output id="white_output"></output>
-				<br> <br> <input type="button" name="ok"
-					value="Lähetä uudet arvot robotille"
-					onclick="sendRobot(this.form);">
-			</form>
-
-			<br>
-			<br>
-			<button onclick='readCurrentStats();'>Näytä tämänhetkiset
-				arvot</button>
-			<br> <br>
-			<br>
-			<div id='stats'></div>
-
-			<script>
-    const whiteValue = document.getElementById('white_value');
-    const whiteOutput = document.getElementById('white_output');
-    whiteOutput.textContent = whiteValue.value;
-    whiteValue.addEventListener('input', () => {
-      whiteOutput.textContent = whiteValue.value;
-    });
-
-    const blackValue = document.getElementById('black_value');
-    const blackOutput = document.getElementById('black_output');
-    blackOutput.textContent = blackValue.value;
-    blackValue.addEventListener('input', () => {
-      blackOutput.textContent = blackValue.value;
-    });
-  </script>
-
-		</section>
-	</article>
-
-	<aside>
+		em.close();
+		emf.close();
+		return list.get(0);
+	}
 	
-	</aside>
-</body>
-</html>
+	@GET
+	@Path("/getdbspeed")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Speeddata getDbSpeed() {
+		EntityManager em = emf.createEntityManager();
+		int maxId = (int) em.createQuery("SELECT MAX(R.id) FROM Speeddata R").getSingleResult();
+		int lastId = maxId;
+
+		List<Speeddata> list = em.createQuery("SELECT R FROM Speeddata R WHERE R.id >= :lastId").setParameter("lastId", lastId)
+				.getResultList();
+
+		em.close();
+		emf.close();
+		return list.get(0);
+	}
+	
+	@GET
+	@Path("/newrobovalues")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String newRoboValues() {
+		EntityManager em = emf.createEntityManager();
+		int maxId = (int) em.createQuery("SELECT MAX(R.id) FROM Robot R").getSingleResult();
+		int lastId = maxId;
+
+		List<Robot> list = em.createQuery("SELECT R FROM Robot R WHERE R.id >= :lastId").setParameter("lastId", lastId)
+				.getResultList();
+
+		em.close();
+		emf.close();
+		 Robot r=list.get(0);
+	     String palaute=""+r.getAcceleration()+" "+r.getSpeedmulti()+ " "+ r.getBlack_value()+ " "+ r.getWhite_value();
+	     return palaute;
+	}
+	
+	@GET
+	@Path("/speedfromrobot/{lcurrent_speed}/{rcurrent_speed}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response speedFromRobot(@PathParam("lcurrent_speed") float lcurrentspeed,
+	                               @PathParam("rcurrent_speed") float rcurrentspeed) {
+		
+	    try {
+	        // Create a new connection to the database
+	        EntityManager em = emf.createEntityManager();
+	        em.getTransaction().begin();
+
+	        // Create a new instance of the SpeedData entity class
+	        Speeddata speedData = new Speeddata();
+	        speedData.setLcurrent_speed(lcurrentspeed);
+	        speedData.setRcurrent_speed(rcurrentspeed);
+
+	        // Persist the SpeedData object in the database
+	        em.persist(speedData);
+
+	        // Commit the transaction and close the entity manager
+	        em.getTransaction().commit();
+	        em.close();
+
+	        // Return a successful response
+	        return Response.ok().build();
+	    } catch (Exception e) {
+	        // Return an error response with the error message
+	        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+	                .entity("Failed to save data: " + e.getMessage())
+	                .build();
+	    }
+	}
+}
