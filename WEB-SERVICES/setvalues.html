@@ -77,7 +77,6 @@ function printCurrentStats(robot){
 	s += "</table>";
 	document.getElementById("stats").innerHTML=s;
 }
-
 </script>
 
 <script>
@@ -111,7 +110,6 @@ function printDbSpeed(speeddata){
 	t += "</table>";
 	document.getElementById("dbspeed").innerHTML=t;
 }
-
 </script>
 
 <body>
@@ -127,58 +125,57 @@ function printDbSpeed(speeddata){
 	<article id='artikkeli'>
 		<section>
 			<h2>Robotin kontrollipaneeli</h2>
-			//Define form for user input
 			<form>
 				<label for="Nopeus"><b>Nopeus:</b></label> <input id="nopeus"
-					type='number' name='speedmulti' min="0" max="600" required><br>
+					type='number' name='speedmulti' min="0" max="2000" required><br>
 				<br> <label for="Kiihdytys"><b>Kiihdytys:</b></label> <input
-					type='number' name='acceleration' min="0" max="1000" required><br>
+					type='number' name='acceleration' min="0" max="2000" required><br>
 				<br> <label for="black_value"><b>Musta-arvo:</b></label> <input
 					type="range" id="black_value" name="black_value" step="0.01"
-					min="0" max="0.3">
-				<output id="black_output"></output>
-				<br>
+					min="0" max="0.3"><output id="black_output"></output><br>
 				<br> <label for="white_value"><b>Valkoinen-arvo:</b></label> <input
 					type="range" id="white_value" name="white_value" step="0.01"
-					min="0.3" max="1">
-				<output id="white_output"></output>
-				<br> <br> <input type="button" name="ok"
-					value="Lähetä uudet arvot robotille"
-					onclick="sendRobot(this.form);">
+					min="0.3" max="1"><output id="white_output"></output><br>
+					<br> <input type="button" name="ok" value="Lähetä uudet arvot robotille" onclick="sendRobot(this.form);">
 			</form>
 
-			<br>
-			<br>
-			<button onclick='readCurrentStats();'>Näytä tämänhetkiset
-				arvot</button>
-			<br> <br>
-			<br>
+			<br><br>
+			<button onclick='readCurrentStats();'>Näytä tämänhetkiset arvot</button>
+			<br><br><br>
 			<div id='stats'></div>
 			
-//Define script to update white and black value output fields on input
-			<script>
-    const whiteValue = document.getElementById('white_value');
-    const whiteOutput = document.getElementById('white_output');
-    whiteOutput.textContent = whiteValue.value;
-    whiteValue.addEventListener('input', () => {
-      whiteOutput.textContent = whiteValue.value;
-    });
+	<script>
+	// Get the white value and output element
+	const whiteValue = document.getElementById('white_value');
+	const whiteOutput = document.getElementById('white_output');
 
-    const blackValue = document.getElementById('black_value');
-    const blackOutput = document.getElementById('black_output');
-    blackOutput.textContent = blackValue.value;
-    blackValue.addEventListener('input', () => {
-      blackOutput.textContent = blackValue.value;
-    });
-  </script>
+	// Set the initial output text content to the value of whiteValue
+	whiteOutput.textContent = whiteValue.value;
 
+	// Add an event listener to whiteValue that updates the output text content whenever the value changes
+	whiteValue.addEventListener('input', () => {
+	  whiteOutput.textContent = whiteValue.value;
+	});
+
+	// Get the black value and output element
+	const blackValue = document.getElementById('black_value');
+	const blackOutput = document.getElementById('black_output');
+
+	// Set the initial output text content to the value of blackValue
+	blackOutput.textContent = blackValue.value;
+
+	// Add an event listener to blackValue that updates the output text content whenever the value changes
+	blackValue.addEventListener('input', () => {
+	  blackOutput.textContent = blackValue.value;
+	});
+	</script>
 		</section>
 	</article>
 
 	<aside>
 			<br>
 			<button onclick='readDbSpeed();'>Näytä moottorien tämänhetkiset nopeudet</button>
-			<br> <br>
+			<br><br>
 			<div id='dbspeed'></div>
 	</aside>
 </body>
