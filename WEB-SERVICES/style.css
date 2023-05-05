@@ -82,7 +82,7 @@ a {
 	opacity: 1;
 }
 
-table, td, th {
+td, th {
   border: 1px solid black;
 }
 
