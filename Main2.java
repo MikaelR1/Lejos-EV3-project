@@ -36,7 +36,8 @@ public class Main2 {
 		MO.start();
 		SD.start();
 		RD.start();
-
+		
+		// Press any button to exit the program
 		Button.waitForAnyPress();
 		System.exit(0);
 	}

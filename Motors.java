@@ -15,31 +15,28 @@ public class Motors extends Thread {
 		rightMotor = new EV3LargeRegulatedMotor(MotorPort.B);
 	}
 
-	@Override
-
 	// Override the run() method of the Thread class
+	@Override
 	public void run() {
 
-		// Acceleration for the motors
-		leftMotor.setAcceleration(DE.getAcceleration());
-		rightMotor.setAcceleration(DE.getAcceleration());
-
 		while (true) {
-			
+
+			// Acceleration for the motors
+			leftMotor.setAcceleration(DE.getAcceleration());
+			rightMotor.setAcceleration(DE.getAcceleration());
+
 			if (DE.getCommand() == DataExchange.FOLLOW_LINE) { // Follow line command
 
-				// Set the speed of the motors based on deviation
+				// Set the speed of the motors
 				leftMotor.setSpeed(200 + (int) (DE.getDeviation() * DE.getSpeedmulti()));
 				rightMotor.setSpeed(200 - (int) (DE.getDeviation() * DE.getSpeedmulti()));
-
-				System.out.println("Vasen moottori: " + leftMotor.getSpeed());
-				System.out.println("Oikea moottori: " + rightMotor.getSpeed());
 				
+				// Store speed of the motors into variables and pass them to DataExchange object
 				float lcurrent_speed = leftMotor.getSpeed();
 				float rcurrent_speed = rightMotor.getSpeed();
 				DE.setLcurrent_speed(lcurrent_speed);
 				DE.setRcurrent_speed(rcurrent_speed);
-				
+
 				// Set the motors go forward
 				leftMotor.forward();
 				rightMotor.forward();
